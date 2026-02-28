@@ -17,7 +17,7 @@ app.listen(PORT,async()=>{
       //  );
     //  cron.schedule('*/5 * * * * *',()=>{
      //   console.log('running task every 2 min');
-      //})
+      // })
     console.log("email sent");
     }catch(err){
   console.log(err.message);
