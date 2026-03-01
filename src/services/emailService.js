@@ -9,14 +9,15 @@ try{
     to:to,
     subject:subject,
     text:body
-})
+});
+return response;
 }catch(err){
     console.log(err);
 }
 }
 const fetchPendingEmails = async(Timestamps)=>{
     try{
- const response = await repo.getAllTickets();
+ const response = await repo.get({status:"PENDING"});
   return response;
     }catch(err){
         throw err;

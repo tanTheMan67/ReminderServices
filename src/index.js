@@ -1,12 +1,14 @@
 const express = require('express');
 const app =express();
-const cron = require('node-cron');
+const jobs= require('./utils/job');
 const {PORT}=require('./config/serverconfig');
 const { sendBasicEmail } = require('./services/emailService');
+const TicketController = require('./controllers/ticket-contoller');
 const startAndSetupServer = ()=>{
-    app.use(express.json());
+    app.use(express.json());    
     app.use(express.urlencoded({extended:true}));
-app.listen(PORT,async()=>{
+    app.post('/api/v1/tickets',TicketController.create);
+    app.listen(PORT,async()=>{
     console.log("app is listening on port "+PORT);
     try{
        // await sendBasicEmail(
@@ -15,10 +17,8 @@ app.listen(PORT,async()=>{
         //'regarding refund',
         //'refund initiation started'
       //  );
-    //  cron.schedule('*/5 * * * * *',()=>{
-     //   console.log('running task every 2 min');
-      // })
-    console.log("email sent");
+     
+    jobs();
     }catch(err){
   console.log(err.message);
     }
