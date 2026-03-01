@@ -32,5 +32,18 @@ return tickets;
         throw err;
     }
  }
+ async update(Id,data){
+    try{ 
+const ticket = await NotificationTicket.findOne({
+    where: { id: Id }
+});
+if(data.status)  
+ticket.status =data.status;
+  await ticket.save();
+  return ticket;
+    }catch(err){
+        throw err;
+    }
+ }
 }
 module.exports = TicketRepository;

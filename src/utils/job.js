@@ -1,9 +1,29 @@
 
+const sender = require('../config/emailConfig');
 const emailService= require('../services/emailService');
 const cron = require('node-cron');
 const setupJobs = ()=>{
     cron.schedule('*/2 * * * *',async()=>{
 const response = await emailService.fetchPendingEmails();
+ response.forEach((email) => {
+    sender.sendMail({
+        to:email.recepientEmail,
+        subject:email.subject,
+        text:email.content
+    },async(err,data)=>{
+        if(err){
+            console.log(err);
+            
+            await emailService.updateTicket(
+                email.id,
+                { status: "FAILED" }
+            );
+        }else{
+            await emailService.updateTicket(email.id,{status:"SUCCESS"});
+        }
+    }
+    )
+});
 console.log(response);
        })  
 }
